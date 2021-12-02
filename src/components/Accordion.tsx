@@ -23,13 +23,13 @@ const Accordion: React.FC = () => {
             open={item.id === 0 ? true : false}
             key={item.id}
           >
-            <mobiscroll.FormGroupTitle>{item.id}</mobiscroll.FormGroupTitle>
+            <mobiscroll.FormGroupTitle>{item.id + 1}</mobiscroll.FormGroupTitle>
             <mobiscroll.FormGroupContent>
               <div className="mbsc-padding">
                 {Array.from(Array(item.number).keys()).map((data: number) => (
                   <IonButton
                     color="success"
-                    href={`/contents/${data + 1}`}
+                    href={`/contents/${item.id + 1}/${data + 1}`}
                     key={data}
                   >
                     {data + 1}
