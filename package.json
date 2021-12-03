@@ -11,6 +11,7 @@
     "@ionic/react": "^5.5.0",
     "@ionic/react-router": "^5.5.0",
     "@mobiscroll/react-lite": "^4.10.9",
+    "@sanskrit-coders/sanscript": "^1.2.0",
     "@testing-library/jest-dom": "^5.11.9",
     "@testing-library/react": "^11.2.5",
     "@testing-library/user-event": "^12.6.3",

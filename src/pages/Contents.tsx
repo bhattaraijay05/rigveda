@@ -9,60 +9,76 @@ import {
   IonToolbar,
 } from "@ionic/react";
 import "@mobiscroll/react-lite/dist/css/mobiscroll.min.css";
-import React, { useEffect, useState } from "react";
-import { useParams } from "react-router";
-import AudioPlayer from "react-h5-audio-player";
+//@ts-ignore
+import Sanscript from "@sanskrit-coders/sanscript";
+import React, { useEffect, useRef, useState } from "react";
+import {
+  default as AudioPlayer,
+  default as H5AudioPlayer,
+} from "react-h5-audio-player";
 import "react-h5-audio-player/lib/styles.css";
-import H5AudioPlayer from "react-h5-audio-player";
-import { between, hmsToSecondsOnly } from "../utils/helpers";
+import { useParams } from "react-router";
+
+const languages = [
+  "malayalam",
+  "kannada",
+  "telugu",
+  "bengali",
+  "devanagari",
+  "oriya",
+  "tamil",
+  "gurmukhi",
+  "gujarati",
+];
+
 const data = [
   {
     shloka: 1,
     content: [
       {
         id: 1,
-        a: "अ॒ग्निमी॑ळे पु॒रोहि॑तं य॒ज्ञस्य॑ दे॒वमृ॒त्विज॑म् ।",
-        c: "होता॑रं रत्न॒धात॑मम् ॥",
+        a: "अग्निमीळे पुरोहितं यज्ञस्य देवमृत्विजम् ।",
+        c: "होतारं रत्नधातमम् ॥१॥",
       },
       {
         id: 2,
-        a: "अ॒ग्निः पूर्वे॑भि॒र्ऋषि॑भि॒रीड्यो॒ नूत॑नैरु॒त ।",
-        c: "स दे॒वाँ एह व॑क्षति ॥",
+        a: "अग्निः पूर्वेभिर्ऋषिभिरीड्यो नूतनैरुत ।",
+        c: "स देवाँ एह वक्षति ॥२॥",
       },
       {
         id: 3,
-        a: "अ॒ग्निना॑ र॒यिम॑श्नव॒त्पोष॑मे॒व दि॒वेदि॑वे ।",
-        c: "य॒शसं॑ वी॒रव॑त्तमम् ॥",
+        a: "अग्निना रयिमश्नवत्पोषमेव दिवेदिवे ।",
+        c: "यशसं वीरवत्तमम् ॥३॥",
       },
       {
         id: 4,
-        a: "अग्ने॒ यं य॒ज्ञम॑ध्व॒रं वि॒श्वतः॑ परि॒भूरसि॑ ।",
-        c: "स इद्दे॒वेषु॑ गच्छति ॥",
+        a: "अग्ने यं यज्ञमध्वरं विश्वतः परिभूरसि ।",
+        c: "स इद्देवेषु गच्छति ॥४॥",
       },
       {
         id: 5,
-        a: "अ॒ग्निर्होता॑ क॒विक्र॑तुः स॒त्यश्चि॒त्रश्र॑वस्तमः ।",
-        c: "दे॒वो दे॒वेभि॒रा ग॑मत् ॥",
+        a: "अग्निर्होता कविक्रतुः सत्यश्चित्रश्रवस्तमः ।",
+        c: "देवो देवेभिरा गमत् ॥५॥",
       },
       {
         id: 6,
-        a: "यद॒ङ्ग दा॒शुषे॒ त्वमग्ने॑ भ॒द्रं क॑रि॒ष्यसि॑ ।",
-        c: "तवेत्तत्स॒त्यम॑ङ्गिरः ॥",
+        a: "यदङ्ग दाशुषे त्वमग्ने भद्रं करिष्यसि ।",
+        c: "तवेत्तत्सत्यमङ्गिरः ॥६॥",
       },
       {
         id: 7,
-        a: "उप॑ त्वाग्ने दि॒वेदि॑वे॒ दोषा॑वस्तर्धि॒या व॒यम् ।",
-        c: "नमो॒ भर॑न्त॒ एम॑सि ॥",
+        a: "उप त्वाग्ने दिवेदिवे दोषावस्तर्धिया वयम् ।",
+        c: "नमो भरन्त एमसि ॥७॥",
       },
       {
         id: 8,
-        a: "राज॑न्तमध्व॒राणां॑ गो॒पामृ॒तस्य॒ दीदि॑विम् ।",
-        c: "वर्ध॑मानं॒ स्वे दमे॑ ॥",
+        a: "राजन्तमध्वराणां गोपामृतस्य दीदिविम् ।",
+        c: "वर्धमानं स्वे दमे ॥८॥",
       },
       {
         id: 9,
-        a: "स नः॑ पि॒तेव॑ सू॒नवेऽग्ने॑ सूपाय॒नो भ॑व ।",
-        c: "सच॑स्वा नः स्व॒स्तये॑ ॥",
+        a: "स नः पितेव सूनवेऽग्ने सूपायनो भव ।",
+        c: "सचस्वा नः स्वस्तये ॥९॥",
       },
     ],
   },
@@ -74,8 +90,18 @@ const Contents = () => {
   const shloka = data.find((s) => s.shloka === parseInt(suktam, 10));
   const audioRef = React.useRef<H5AudioPlayer>(null);
   const [audioSource, setAudioSource] = useState(1);
+  const [language, setLanguage] = useState("devanagari");
 
-  // change the color of text with time
+  const scrollRef = useRef(null);
+
+  useEffect(() => {
+    if (scrollRef.current) {
+      //@ts-ignore
+      scrollRef.current.scrollIntoView({
+        behavior: "smooth",
+      });
+    }
+  }, [audioSource]);
 
   if (!shloka) {
     return (
@@ -123,6 +149,12 @@ const Contents = () => {
             onEnded={() => {
               setAudioSource(audioSource + 1);
             }}
+            onClickNext={() => {
+              setAudioSource(audioSource + 1);
+            }}
+            onClickPrevious={() => {
+              setAudioSource(audioSource - 1);
+            }}
           />
         </div>
         <div
@@ -133,9 +165,9 @@ const Contents = () => {
           }}
         >
           {data[0].content.map((item) => {
-            return Texts();
+            return <Texts language={language} />;
 
-            function Texts() {
+            function Texts({ language }: { language: string }) {
               return (
                 <div
                   key={item.id}
@@ -143,16 +175,18 @@ const Contents = () => {
                   style={{
                     cursor: "pointer",
                   }}
+                  //@ts-ignore
+                  ref={item.id === audioSource ? scrollRef : null}
                 >
                   <h3
                     style={{ color: item.id === audioSource ? "red" : "black" }}
                   >
-                    <b>{item.a}</b>
+                    <b>{Sanscript.t(item.a, "devanagari", language)}</b>
                   </h3>
                   <h4
                     style={{ color: item.id === audioSource ? "red" : "black" }}
                   >
-                    {item.c}
+                    {Sanscript.t(item.c, "devanagari", language)}
                   </h4>
                   <br />
                 </div>
@@ -160,6 +194,24 @@ const Contents = () => {
             }
           })}
         </div>
+
+        <select
+          name={language}
+          value={language}
+          onChange={(e) => setLanguage(e.target.value)}
+          style={{
+            margin: "10px",
+            padding: "5px",
+            position: "fixed",
+            bottom: "0",
+          }}
+        >
+          {languages.map((language) => (
+            <option key={language} value={language}>
+              {language}
+            </option>
+          ))}
+        </select>
       </IonContent>
     </IonPage>
   );
