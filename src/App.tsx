@@ -1,4 +1,4 @@
-import { IonApp, IonRouterOutlet } from "@ionic/react";
+import { IonApp, IonButton, IonRouterOutlet } from "@ionic/react";
 import { IonReactRouter } from "@ionic/react-router";
 import "@ionic/react/css/core.css";
 import "@ionic/react/css/display.css";
@@ -34,6 +34,19 @@ const App: React.FC = () => (
         </Route>
       </IonRouterOutlet>
     </IonReactRouter>
+
+    <IonButton
+      style={{
+        margin: "10px",
+        padding: "5px",
+        position: "fixed",
+        bottom: "0",
+        right: "0",
+      }}
+      href={`/search`}
+    >
+      Search
+    </IonButton>
   </IonApp>
 );
 
