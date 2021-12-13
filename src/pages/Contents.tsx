@@ -40,9 +40,9 @@ const Contents: React.FC = () => {
     suktam,
   }: { mandalam: string; aadhaya: string; suktam: string } = useParams();
 
-  const data = getAadhayasById(Number(aadhaya), Number(suktam));
+  const data = getAadhayasById(Number(aadhaya), Number(aadhaya));
   const audioRef = React.useRef<H5AudioPlayer>(null);
-  const [audioSource, setAudioSource] = useState(1);
+  const [audioSource, setAudioSource] = useState(Number(suktam));
   const [language, setLanguage] = useState("devanagari");
 
   const scrollRef = useRef(null);
@@ -54,7 +54,7 @@ const Contents: React.FC = () => {
         behavior: "smooth",
       });
     }
-  }, [audioSource]);
+  }, [audioSource, audioRef]);
 
   if (!data) {
     return (

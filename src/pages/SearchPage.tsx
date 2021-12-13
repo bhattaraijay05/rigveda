@@ -44,7 +44,7 @@ const SearchPage = () => {
                   backgroundColor: "white",
                 }}
                 onClick={() => {
-                  window.location.href = `/contents/${item.mandalam}/${item.aadhayaa}/${item.sukta.id}`;
+                  window.location.href = `/contents/${item.mandalam}/${item.aadhayaa}`;
                 }}
               >
                 <h3>
