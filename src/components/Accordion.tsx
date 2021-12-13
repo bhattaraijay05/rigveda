@@ -2,37 +2,30 @@ import React from "react";
 import mobiscroll, { Button } from "@mobiscroll/react-lite";
 import "@mobiscroll/react-lite/dist/css/mobiscroll.min.css";
 import { IonButton } from "@ionic/react";
-
-type Chapter = {
-  id: number;
-  number: number;
-};
-
-const data: Chapter[] = Array.from({ length: 15 }, (_, i) => ({
-  id: i,
-  number: 19,
-}));
+import { getAllMandalam } from "../data/Data";
 
 const Accordion: React.FC = () => {
   return (
     <mobiscroll.Form>
       <mobiscroll.Accordion>
-        {data.map((item: Chapter) => (
+        {getAllMandalam().map((mandalam) => (
           <mobiscroll.FormGroup
             collapsible
-            open={item.id === 0 ? true : false}
-            key={item.id}
+            open={mandalam.name == "Mandalam 1" ? true : false}
+            key={mandalam.name}
           >
-            <mobiscroll.FormGroupTitle>{item.id + 1}</mobiscroll.FormGroupTitle>
+            <mobiscroll.FormGroupTitle>
+              {mandalam.name}
+            </mobiscroll.FormGroupTitle>
             <mobiscroll.FormGroupContent>
               <div className="mbsc-padding">
-                {Array.from(Array(item.number).keys()).map((data: number) => (
+                {mandalam.aadhayaa.map((aadhayaa) => (
                   <IonButton
                     color="success"
-                    href={`/contents/${item.id + 1}/${data + 1}`}
-                    key={data}
+                    href={`/contents/${mandalam.id}/${aadhayaa.id}`}
+                    key={aadhayaa.id}
                   >
-                    {data + 1}
+                    {aadhayaa.name}
                   </IonButton>
                 ))}
               </div>
