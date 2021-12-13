@@ -1,10 +1,5 @@
 import { IonApp, IonRouterOutlet } from "@ionic/react";
 import { IonReactRouter } from "@ionic/react-router";
-import { Redirect, Route } from "react-router-dom";
-import ButtonExample from "./components/Button";
-import Contents from "./pages/Contents";
-import Home from "./pages/Home";
-
 import "@ionic/react/css/core.css";
 import "@ionic/react/css/display.css";
 import "@ionic/react/css/flex-utils.css";
@@ -15,6 +10,10 @@ import "@ionic/react/css/structure.css";
 import "@ionic/react/css/text-alignment.css";
 import "@ionic/react/css/text-transformation.css";
 import "@ionic/react/css/typography.css";
+import { Redirect, Route } from "react-router-dom";
+import Contents from "./pages/Contents";
+import Home from "./pages/Home";
+import SearchPage from "./pages/SearchPage";
 import "./theme/variables.css";
 
 const App: React.FC = () => (
@@ -24,14 +23,14 @@ const App: React.FC = () => (
         <Route exact path="/home">
           <Home />
         </Route>
-        <Route exact path="/but">
-          <ButtonExample />
-        </Route>
         <Route exact path="/">
           <Redirect to="/home" />
         </Route>
-        <Route exact path="/contents/:mandalam/:suktam">
+        <Route exact path="/contents/:mandalam/:aadhaya/:suktam">
           <Contents />
+        </Route>
+        <Route exact path="/search">
+          <SearchPage />
         </Route>
       </IonRouterOutlet>
     </IonReactRouter>

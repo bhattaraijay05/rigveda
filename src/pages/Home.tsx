@@ -1,11 +1,14 @@
 import { RefresherEventDetail } from "@ionic/core";
 import {
+  IonButton,
   IonContent,
   IonHeader,
   IonPage,
+  IonSearchbar,
   IonTitle,
   IonToolbar,
 } from "@ionic/react";
+import { useState } from "react";
 import Accordion from "../components/Accordion";
 import "./Home.css";
 
@@ -28,6 +31,18 @@ const Home: React.FC = () => {
         </IonHeader>
         <Accordion />
       </IonContent>
+
+      <IonButton
+        style={{
+          margin: "10px",
+          padding: "5px",
+          position: "fixed",
+          bottom: "0",
+        }}
+        href={`/search`}
+      >
+        Search
+      </IonButton>
     </IonPage>
   );
 };
